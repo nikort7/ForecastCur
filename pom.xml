@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ru.liga</groupId>
-    <artifactId>prognoz-currency</artifactId>
+    <artifactId>forecast-currency</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -13,7 +13,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <name>prognozcur</name>
+    <name>forecastcur</name>
     <url>http://maven.apache.org</url>
 
     <dependencies>
