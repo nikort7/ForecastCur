@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FileParseService {
 
@@ -60,12 +61,11 @@ public class FileParseService {
      * @param pathToCsv
      * @throws IOException Если есть проблема при чтении файлов
      */
-    private static ArrayList<CurrencyRateDto> readFile(String pathToCsv) throws IOException {
-        ArrayList<CurrencyRateDto> currencyList = new ArrayList<CurrencyRateDto>();
+    private List<CurrencyRateDto> readFile(String pathToCsv) throws IOException {
+        List<CurrencyRateDto> currencyList = new ArrayList<CurrencyRateDto>();
         CurrencyRateDto currencyRateDto = new CurrencyRateDto();
 
-        FileParseService app = new FileParseService();
-        InputStream is = app.getFileFromResourceAsStream(pathToCsv);
+        InputStream is = getFileFromResourceAsStream(pathToCsv);
         //printInputStream(is);
 
         try (InputStreamReader streamReader = new InputStreamReader(is, StandardCharsets.UTF_8);
@@ -85,7 +85,7 @@ public class FileParseService {
         return currencyList;
     }
 
-    public static ArrayList<CurrencyRateDto> readFileCsv(String pathToCsv) throws IOException {
+    public List<CurrencyRateDto> readFileCsv(String pathToCsv) throws IOException {
         return readFile(pathToCsv);
     }
 }

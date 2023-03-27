@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.Locale;
 
 public class DateUtils {
+    //Day of week and month in Rus
+    private static final Locale rusLocale = new Locale("ru", "RU");
 
     /**
      * Получение даты, следующей за передаваемой, в русской локали
@@ -23,8 +25,12 @@ public class DateUtils {
         LocalDateTime localDateTime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         localDateTime = localDateTime.plusDays(1);
 
-        //Day of week and month in Rus
-        Locale rusLocale = new Locale("ru", "RU");
-        return localDateTime.format(DateTimeFormatter.ofPattern("EE dd.MM.yyyy", rusLocale));
+        String result = localDateTime.format(DateTimeFormatter.ofPattern("EE dd.MM.yyyy", rusLocale));
+        return result.substring(0, 1).toUpperCase() + result.substring(1);
+    }
+
+    public static String getCurrentDate() {
+        String currentDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy", rusLocale));
+        return currentDate;
     }
 }

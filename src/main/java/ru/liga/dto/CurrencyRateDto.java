@@ -1,5 +1,10 @@
 package ru.liga.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class CurrencyRateDto {
     private String nominal;
     private String date;
@@ -22,38 +27,6 @@ public class CurrencyRateDto {
 
     public CurrencyRateDto() {
 
-    }
-
-    public String getNominal() {
-        return nominal;
-    }
-
-    public void setNominal(String nominal) {
-        this.nominal = nominal;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
-    public String getCdx() {
-        return cdx;
-    }
-
-    public void setCdx(String cdx) {
-        this.cdx = cdx;
     }
 
 }
