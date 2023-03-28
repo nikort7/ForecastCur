@@ -8,27 +8,22 @@ import java.util.List;
 
 @Getter
 public enum CurrencyType {
-    INPUT_CSV_FILE_USD("cbr/usd.csv"),
-    INPUT_CSV_FILE_EUR("cbr/eur.csv"),
-    INPUT_CSV_FILE_TRY("cbr/try.csv");
+    USD("usd.csv"),
+    EUR("eur.csv"),
+    TRY("try.csv");
 
     private String link;
     CurrencyType(String link) {
-        this.link = link;
+        this.link = "cbr/" + link;
     }
 
-    public static String checkCurrency(String inputData) {
+    public static CurrencyType checkCurrency(String inputData) {
+
         List<String> inputList = Arrays.stream(inputData.split(" ")).toList();
-        List<String> returnList = new ArrayList<>();
-        String returnValue = new String();
-        for (String inputValue : inputList) {
-            if (inputValue.equals("USD") || inputValue.equals("EUR") || inputValue.equals("TRY")) {
-                returnList.add(inputValue);
-            }
-        }
-        if (returnList.size() == 1) {
-            returnValue = returnList.get(0);
-        }
-        return returnValue;
+        CurrencyType currencyType = CurrencyType.valueOf(inputList.get(1).toUpperCase());
+
+        return currencyType;
     }
+
+
 }

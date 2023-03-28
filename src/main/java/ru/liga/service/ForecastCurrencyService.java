@@ -2,6 +2,7 @@ package ru.liga.service;
 
 import ru.liga.dto.CurrencyRateDto;
 import ru.liga.enums.CurrencyType;
+import ru.liga.enums.InputType;
 
 import java.io.*;
 import java.text.ParseException;
@@ -18,18 +19,9 @@ public class ForecastCurrencyService {
     private static List<CurrencyRateDto> initInfo(String inputData) {
         FileParseService fileParseService = new FileParseService();
         List<CurrencyRateDto> currencyList = new ArrayList<>();
-        String currencyValue = CurrencyType.checkCurrency(inputData);
+        CurrencyType currencyType = CurrencyType.checkCurrency(inputData);
         try {
-            if (currencyValue.equals("USD")) {
-                currencyList = fileParseService.readFileCsv(CurrencyType.INPUT_CSV_FILE_USD.getLink());
-            } else if (currencyValue.equals("EUR")) {
-                currencyList = fileParseService.readFileCsv(CurrencyType.INPUT_CSV_FILE_EUR.getLink());
-            } else if (currencyValue.equals("TRY")) {
-                currencyList = fileParseService.readFileCsv(CurrencyType.INPUT_CSV_FILE_TRY.getLink());
-            } else {
-                System.out.println("Error when entering currency");
-            }
-
+            currencyList = fileParseService.readFileCsv(currencyType.getLink());
             currencyList = completingList(currencyList);
 
         } catch (IOException e) {
@@ -45,97 +37,58 @@ public class ForecastCurrencyService {
      */
     private static List<CurrencyRateDto> completingList(List<CurrencyRateDto> currencyRateDtoList) {
         String date = currencyRateDtoList.get(1).getDate();
-        String currentDate = DateUtils.getCurrentDate();
-        while (!currentDate.equals(date)) {
-            double avgRate = currencyRateDtoList.stream()
+
+        int differenceDays = DateUtils.getDifferenceDays(date);
+        getForecastResult(currencyRateDtoList, differenceDays);
+
+        return currencyRateDtoList;
+    }
+
+    /**
+     * Получение прогноза курса валют
+     *
+     * @param currencyList Список значений, по которому делам прогноз
+     * @param nextDayParam количство дней для заполнения листа
+     */
+    public static void getForecastResult(List<CurrencyRateDto> currencyList, Integer nextDayParam) {
+        int outLoop = 0;
+        while (outLoop < nextDayParam) {
+            double avgRate = currencyList.stream()
                     .limit(7)
                     .mapToDouble(w -> Double.parseDouble(w.getCurrency()))
                     .sum()
                     / 7;
 
             try {
-                String dateInRus = DateUtils.getDateInRus(currencyRateDtoList.get(0).getDate());
-                date = dateInRus.substring(3);
-                currencyRateDtoList.add(0, new CurrencyRateDto(currencyRateDtoList.get(0).getNominal(),
-                        date,
+                String dateInRus = DateUtils.getDateInRus(currencyList.get(0).getDate());
+
+                currencyList.add(0, new CurrencyRateDto(currencyList.get(0).getNominal(),
+                        dateInRus,
                         String.valueOf(avgRate),
-                        currencyRateDtoList.get(0).getCdx()));
+                        currencyList.get(0).getCdx()));
+                outLoop++;
+
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
-        }
-        return currencyRateDtoList;
-    }
-
-    /**
-     * Получение прогноза курса валют на завтра
-     *
-     * @param currencyList Список значений, по которому делам прогноз
-     */
-    public static void getForecastResult(List<CurrencyRateDto> currencyList) {
-        double avgRate = currencyList.stream()
-                .limit(7)
-                .mapToDouble(w -> Double.parseDouble(w.getCurrency()))
-                .sum()
-                / 7;
-
-        try {
-            String dateInRus = DateUtils.getDateInRus(currencyList.get(0).getDate());
-            System.out.println(dateInRus + " - " + String.format("%.2f",avgRate));
-
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Получение прогноза курса валют на неделю
-     *
-     * @param currencyList Список значений, по которому делам прогноз
-     * @param nextDayParam Параметр для выхода из рекурсии
-     */
-    public static void getForecastWeekResult(List<CurrencyRateDto> currencyList, Integer nextDayParam) {
-        double avgRate = currencyList.stream()
-                .limit(7)
-                .mapToDouble(w -> Double.parseDouble(w.getCurrency()))
-                .sum()
-                / 7;
-
-        try {
-            String dateInRus = DateUtils.getDateInRus(currencyList.get(0).getDate());
-
-            System.out.println(dateInRus + " " + String.format("%.2f",avgRate));
-
-            currencyList.add(0, new CurrencyRateDto(currencyList.get(0).getNominal(),
-                                                      dateInRus.substring(3),
-                                                      String.valueOf(avgRate),
-                                                      currencyList.get(0).getCdx()));
-            if (nextDayParam < 7) {
-                getForecastWeekResult(currencyList, nextDayParam + 1);
-            }
-
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
         }
     }
 
     /**
      * Получение прогноза
      */
-    public static void getForecastResult() {
+    public static void getForecastResult() throws ParseException {
 
         String inputDataFromConsole = InputData.inputFromConsole();
 
         List<CurrencyRateDto> currencyRateDtoList = initInfo(inputDataFromConsole);
+        Integer inputType = Integer.valueOf(InputType.getInputTypeFromConsole(inputDataFromConsole));
         if (!currencyRateDtoList.isEmpty()) {
-            if (inputDataFromConsole.matches("(.*)tomorrow")) {
-                getForecastResult(currencyRateDtoList);
-            } else if (inputDataFromConsole.matches("(.*)week")) {
-                getForecastWeekResult(currencyRateDtoList, 0);
-            }
-            else {
-                System.out.println("Input error");
-            }
+            getForecastResult(currencyRateDtoList, inputType);
+            OutputData.printResult(currencyRateDtoList, inputType);
+        }
+        else {
+            System.out.println("Input error");
         }
 
     }
