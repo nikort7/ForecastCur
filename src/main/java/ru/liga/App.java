@@ -9,6 +9,6 @@ public class App {
     private static ForecastCurrencyService forecastCurrencyService;
 
     public static void main( String[] args ) throws IOException, ParseException {
-        forecastCurrencyService.getForecastResult();
+        forecastCurrencyService.executeForecast();
     }
 }

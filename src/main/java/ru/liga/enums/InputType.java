@@ -7,19 +7,19 @@ import java.util.List;
 
 @Getter
 public enum InputType {
-    TOMORROW("1"),
-    WEEK("7");
+    TOMORROW(1),
+    WEEK(7);
 
-    private String type;
-    InputType(String type) {
-        this.type = type;
+    private Integer idInputType;
+    InputType(Integer idInputType) {
+        this.idInputType = idInputType;
     }
 
-    public static String getInputTypeFromConsole(String inputData) {
+    public static Integer getInputTypeFromConsole(String inputData) {
 
         List<String> inputList = Arrays.stream(inputData.split(" ")).toList();
-        InputType currencyType = InputType.valueOf(inputList.get(2).toUpperCase());
+        InputType inputType = InputType.valueOf(inputList.get(2).toUpperCase());
 
-        return currencyType.getType();
+        return inputType.getIdInputType();
     }
 }

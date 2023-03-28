@@ -2,6 +2,7 @@ package ru.liga.service;
 
 import ru.liga.dto.CurrencyRateDto;
 import ru.liga.enums.CurrencyType;
+import ru.liga.enums.InputStart;
 import ru.liga.enums.InputType;
 
 import java.io.*;
@@ -39,7 +40,14 @@ public class ForecastCurrencyService {
         String date = currencyRateDtoList.get(1).getDate();
 
         int differenceDays = DateUtils.getDifferenceDays(date);
-        getForecastResult(currencyRateDtoList, differenceDays);
+        if (differenceDays < 0) {
+            for (int i = 0; i < Math.abs(differenceDays); i++) {
+                currencyRateDtoList.remove(i);
+            }
+        }
+        else {
+            getForecastResult(currencyRateDtoList, differenceDays);
+        }
 
         return currencyRateDtoList;
     }
@@ -51,8 +59,7 @@ public class ForecastCurrencyService {
      * @param nextDayParam количство дней для заполнения листа
      */
     public static void getForecastResult(List<CurrencyRateDto> currencyList, Integer nextDayParam) {
-        int outLoop = 0;
-        while (outLoop < nextDayParam) {
+        for (int outLoop = 0; outLoop < nextDayParam; outLoop++) {
             double avgRate = currencyList.stream()
                     .limit(7)
                     .mapToDouble(w -> Double.parseDouble(w.getCurrency()))
@@ -66,7 +73,6 @@ public class ForecastCurrencyService {
                         dateInRus,
                         String.valueOf(avgRate),
                         currencyList.get(0).getCdx()));
-                outLoop++;
 
             } catch (ParseException e) {
                 throw new RuntimeException(e);
@@ -77,18 +83,20 @@ public class ForecastCurrencyService {
     /**
      * Получение прогноза
      */
-    public static void getForecastResult() throws ParseException {
+    public static void executeForecast() throws ParseException {
 
         String inputDataFromConsole = InputData.inputFromConsole();
-
-        List<CurrencyRateDto> currencyRateDtoList = initInfo(inputDataFromConsole);
-        Integer inputType = Integer.valueOf(InputType.getInputTypeFromConsole(inputDataFromConsole));
-        if (!currencyRateDtoList.isEmpty()) {
-            getForecastResult(currencyRateDtoList, inputType);
-            OutputData.printResult(currencyRateDtoList, inputType);
-        }
-        else {
-            System.out.println("Input error");
+        if (InputStart.checkInputStart(inputDataFromConsole)) {
+            List<CurrencyRateDto> currencyRateDtoList = initInfo(inputDataFromConsole);
+            Integer inputType = InputType.getInputTypeFromConsole(inputDataFromConsole);
+            if (!currencyRateDtoList.isEmpty()) {
+                getForecastResult(currencyRateDtoList, inputType);
+                OutputData.printResult(currencyRateDtoList, inputType);
+            } else {
+                System.out.println("Input error");
+            }
+        } else {
+            System.out.println("Input start error");
         }
 
     }
