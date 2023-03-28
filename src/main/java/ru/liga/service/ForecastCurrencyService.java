@@ -2,8 +2,6 @@ package ru.liga.service;
 
 import ru.liga.dto.CurrencyRateDto;
 import ru.liga.enums.CurrencyType;
-import ru.liga.enums.InputStart;
-import ru.liga.enums.InputType;
 
 import java.io.*;
 import java.text.ParseException;
@@ -11,13 +9,14 @@ import java.util.*;
 
 
 public class ForecastCurrencyService {
+    private static final int CONST_ALG_VALUE = 7;
 
     /**
      * Заполнение преременных данными из файлов
      *
      * @throws IOException Если есть проблема при чтении файлов
      */
-    private static List<CurrencyRateDto> initInfo(String inputData) {
+    public static List<CurrencyRateDto> initInfo(String inputData) {
         FileParseService fileParseService = new FileParseService();
         List<CurrencyRateDto> currencyList = new ArrayList<>();
         CurrencyType currencyType = CurrencyType.checkCurrency(inputData);
@@ -37,7 +36,7 @@ public class ForecastCurrencyService {
      * @return
      */
     private static List<CurrencyRateDto> completingList(List<CurrencyRateDto> currencyRateDtoList) {
-        String date = currencyRateDtoList.get(1).getDate();
+        String date = currencyRateDtoList.get(0).getDate();
 
         int differenceDays = DateUtils.getDifferenceDays(date);
         if (differenceDays < 0) {
@@ -61,10 +60,10 @@ public class ForecastCurrencyService {
     public static void getForecastResult(List<CurrencyRateDto> currencyList, Integer nextDayParam) {
         for (int outLoop = 0; outLoop < nextDayParam; outLoop++) {
             double avgRate = currencyList.stream()
-                    .limit(7)
+                    .limit(CONST_ALG_VALUE)
                     .mapToDouble(w -> Double.parseDouble(w.getCurrency()))
                     .sum()
-                    / 7;
+                    / CONST_ALG_VALUE;
 
             try {
                 String dateInRus = DateUtils.getDateInRus(currencyList.get(0).getDate());
@@ -79,26 +78,4 @@ public class ForecastCurrencyService {
             }
         }
     }
-
-    /**
-     * Получение прогноза
-     */
-    public static void executeForecast() throws ParseException {
-
-        String inputDataFromConsole = InputData.inputFromConsole();
-        if (InputStart.checkInputStart(inputDataFromConsole)) {
-            List<CurrencyRateDto> currencyRateDtoList = initInfo(inputDataFromConsole);
-            Integer inputType = InputType.getInputTypeFromConsole(inputDataFromConsole);
-            if (!currencyRateDtoList.isEmpty()) {
-                getForecastResult(currencyRateDtoList, inputType);
-                OutputData.printResult(currencyRateDtoList, inputType);
-            } else {
-                System.out.println("Input error");
-            }
-        } else {
-            System.out.println("Input start error");
-        }
-
-    }
-
 }

@@ -44,6 +44,6 @@ public class DateUtils {
         LocalDate startDate = LocalDate.parse(date, formatter);
         LocalDate currentDate = LocalDate.now();
         Period period = Period.between(startDate, currentDate);
-        return period.getDays()-1;
+        return period.getDays();
     }
 }

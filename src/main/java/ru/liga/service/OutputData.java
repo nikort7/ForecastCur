@@ -12,12 +12,12 @@ public class OutputData {
     }
 
     public static void printResult(List<CurrencyRateDto> currencyList, Integer nextDayParam) throws ParseException {
-        List<CurrencyRateDto> resultList = currencyList.stream()
+        currencyList = currencyList.stream()
                 .limit(nextDayParam)
                 .collect(Collectors.toList());
-        for (int i = resultList.size() - 1; i >= 0; i--) {
-            String dateInRusWithName = DateUtils.getDateInRusWithName(resultList.get(i).getDate());
-            Double avgRate = Double.valueOf(resultList.get(i).getCurrency());
+        for (int i = currencyList.size() - 1; i >= 0; i--) {
+            String dateInRusWithName = DateUtils.getDateInRusWithName(currencyList.get(i).getDate());
+            Double avgRate = Double.valueOf(currencyList.get(i).getCurrency());
             printResultRow(dateInRusWithName, avgRate);
         }
     }
