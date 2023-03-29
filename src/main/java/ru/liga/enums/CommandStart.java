@@ -3,10 +3,10 @@ package ru.liga.enums;
 import lombok.Getter;
 
 @Getter
-public enum InputStart {
+public enum CommandStart {
     RATE(1);
 
-    InputStart(Integer idInputStart) {
+    CommandStart(Integer commandStartId) {
     }
 
 }

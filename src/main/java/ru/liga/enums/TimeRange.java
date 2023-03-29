@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum InputType {
+public enum TimeRange {
     TOMORROW(1),
     WEEK(7);
 

@@ -1,15 +1,33 @@
 package ru.liga.service;
 
 import ru.liga.dto.CurrencyRateDto;
-import ru.liga.enums.CurrencyType;
-
-import java.io.*;
 import java.text.ParseException;
 import java.util.*;
 
 
 public class ForecastCurrencyService {
     private static final int CONST_ALG_VALUE = 7;
+
+    /**
+     * Дозаплнение списка
+     * @param currencyRateDtoList
+     * @return
+     */
+    public static List<CurrencyRateDto> completingList(List<CurrencyRateDto> currencyRateDtoList) {
+        String date = currencyRateDtoList.get(0).getDate();
+
+        int differenceDays = DateUtils.getDifferenceDays(date);
+        if (differenceDays < 0) {
+            for (int i = 0; i < Math.abs(differenceDays); i++) {
+                currencyRateDtoList.remove(i);
+            }
+        }
+        else {
+            ForecastCurrencyService.getForecastResult(currencyRateDtoList, differenceDays);
+        }
+
+        return currencyRateDtoList;
+    }
 
     /**
      * Получение прогноза курса валют
