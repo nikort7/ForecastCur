@@ -9,7 +9,9 @@ import java.util.List;
 public enum CurrencyType {
     USD("usd.csv"),
     EUR("eur.csv"),
-    TRY("try.csv");
+    TRY("try.csv"),
+    AMD("amd.csv"),
+    BGN("bgn.csv");
 
     private String link;
     CurrencyType(String link) {
