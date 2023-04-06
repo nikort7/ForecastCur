@@ -6,7 +6,7 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import ru.liga.service.*;
 
-public class App {
+public class App {//todo тут все ок 🙂
 
     public static void main( String[] args ) throws TelegramApiException {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);

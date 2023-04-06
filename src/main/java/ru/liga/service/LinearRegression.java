@@ -26,7 +26,7 @@ import java.util.List;
  *  @author Robert Sedgewick
  *  @author Kevin Wayne
  */
-public class LinearRegression {
+public class LinearRegression {//todo отрефачить: убрать неиспользуемые методы, обозвать нормально переменные и тд
     private final double intercept, slope;
     private final double r2;
     private final double svar0, svar1;

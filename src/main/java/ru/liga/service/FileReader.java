@@ -20,7 +20,7 @@ public class FileReader {
 
         try {
             currencyList = fileParseService.readFileCsv(currencyType.getLink());
-            currencyList = ForecastCurrencyService.completingList(currencyList);
+            currencyList = ForecastCurrencyService.completingList(currencyList);//todo используй стримы лучше
 
         } catch (IOException e) {
             throw new RuntimeException(e);

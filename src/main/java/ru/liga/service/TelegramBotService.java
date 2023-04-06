@@ -23,10 +23,10 @@ import ru.liga.enums.*;
 @Slf4j
 public class TelegramBotService extends TelegramLongPollingBot {
 
-    private static final String BOT_NAME = "forecast_currency_bot";
+    private static final String BOT_NAME = "forecast_currency_bot";//todo понимаю, что так удобнее, но лучше кредсы выносить в переменные окружения
     private static final String BOT_TOKEN = "6295340521:AAFj5wAkbtJ_cJF86WVG7j6oNI9ciel5flw";
 
-    private static final Logger logger = LoggerFactory.getLogger(TelegramBotService.class);
+    private static final Logger logger = LoggerFactory.getLogger(TelegramBotService.class);//todo не обязательно, можно использовать статический метод log, так класс уже помечен аннотацией логирования
 
     @Override
     public String getBotUsername() {
@@ -39,7 +39,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
     }
 
     @Override
-    public void onUpdateReceived(Update update) {
+    public void onUpdateReceived(Update update) {//todo огромный метод, наверняка тут не все относится к этому сервисы по смыслу, разбей на классы
         Message originalMessage = update.getMessage();
         String inputDataFromConsole = originalMessage.getText();
         logger.debug(inputDataFromConsole);
@@ -85,11 +85,11 @@ public class TelegramBotService extends TelegramLongPollingBot {
             }
             ////////////////////////////////////////////////////////////////////////////
         } catch (IllegalArgumentException e) {
-            outputData = "Введена неверная команда";
-            logger.error(String.valueOf(e) + ": " + outputData);
+            outputData = "Введена неверная команда";//todo вынеси в константу или enum
+            logger.error(String.valueOf(e) + ": " + outputData);// todo используй MessageFormat
         } catch (ArrayIndexOutOfBoundsException e) {
-            outputData = "В команде не хватает значений";
-            logger.error(String.valueOf(e) + ": " + outputData);
+            outputData = "В команде не хватает значений";//todo вынеси в константу или enum
+            logger.error(String.valueOf(e) + ": " + outputData);// todo используй MessageFormat
         }
 
         answer.setChatId(originalMessage.getChatId().toString());

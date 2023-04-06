@@ -16,7 +16,7 @@ public enum CurrencyType {
     private String link;
     CurrencyType(String link) {
         this.link = "cbr/" + link;
-    }
+    }// todo смысл? добавь этот префикс сразу в значение
 
     public static CurrencyType checkCurrency(String inputData) {
 

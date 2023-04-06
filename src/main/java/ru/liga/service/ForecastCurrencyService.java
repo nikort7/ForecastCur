@@ -9,8 +9,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
-public class ForecastCurrencyService {
-    private static final int CONST_ALG_VALUE = 7;
+public class ForecastCurrencyService {//todo делать все методы статическими не хорошо
+    private static final int CONST_ALG_VALUE = 7;//todo название переменной ни о чем не говорит
 
     /**
      * Дозаплнение списка
@@ -18,10 +18,10 @@ public class ForecastCurrencyService {
      * @return
      */
     public static List<CurrencyRateDto> completingList(List<CurrencyRateDto> currencyRateDtoList) {
-        String date = currencyRateDtoList.get(0).getDate();
+        String date = currencyRateDtoList.get(0).getDate();//todo магическое число
 
         int differenceDays = DateUtils.getDifferenceDays(date);
-        if (differenceDays < 0) {
+        if (differenceDays < 0) {//todo магическое число
             for (int i = 0; i < Math.abs(differenceDays); i++) {
                 currencyRateDtoList.remove(i);
             }
@@ -45,15 +45,15 @@ public class ForecastCurrencyService {
                     .limit(CONST_ALG_VALUE)
                     .mapToDouble(w -> Double.parseDouble(w.getCurrency()))
                     .sum()
-                    / CONST_ALG_VALUE;
+                    / CONST_ALG_VALUE;//todo суммирование лучше вынести в отдельный метод, и разделить отдельно. Перенос строки тут лишний
 
             try {
                 String dateInRus = DateUtils.getDateInRus(currencyList.get(0).getDate());
 
-                currencyList.add(0, new CurrencyRateDto(currencyList.get(0).getNominal(),
+                currencyList.add(0, new CurrencyRateDto(currencyList.get(0).getNominal(),//todo магическое число
                         dateInRus,
                         String.valueOf(avgRate),
-                        currencyList.get(0).getCdx()));
+                        currencyList.get(0).getCdx()));//todo магическое число
 
             } catch (ParseException e) {
                 throw new RuntimeException(e);
@@ -69,19 +69,19 @@ public class ForecastCurrencyService {
             Optional<CurrencyRateDto> currencyRateDto = currencyList.stream()
                     .filter(currency -> currency.getDate().equals(prevYearDate))
                     .findAny();
-            if (!currencyRateDto.isEmpty()) {
+            if (!currencyRateDto.isEmpty()) {//todo isPresent. Но лучше использовать Optional красивее через методы map и orElse/orElseGet
                 String prevYearRate = currencyRateDto.get().getCurrency();
 
-                currencyList.add(0, new CurrencyRateDto(currencyList.get(0).getNominal(),
+                currencyList.add(0, new CurrencyRateDto(currencyList.get(0).getNominal(),//todo магическое число
                         dateInRus,
                         String.valueOf(prevYearRate),
                         currencyList.get(0).getCdx()));
             }
             else {
-                currencyList.add(0, new CurrencyRateDto(currencyList.get(0).getNominal(),
+                currencyList.add(0, new CurrencyRateDto(currencyList.get(0).getNominal(),//todo магическое число
                         dateInRus,
-                        currencyList.get(0).getCurrency(),
-                        currencyList.get(0).getCdx()));
+                        currencyList.get(0).getCurrency(),//todo магическое число
+                        currencyList.get(0).getCdx()));//todo магическое число
             }
         }
     }
@@ -94,17 +94,17 @@ public class ForecastCurrencyService {
                     .filter(currency -> currency.getDate().contains(dateMonth))
                     .collect(Collectors.toList());
 
-            if (!currencyRateDto.isEmpty()) {
+            if (!currencyRateDto.isEmpty()) {//todo isPresent. Но лучше использовать Optional красивее через методы map и orElse/orElseGet
                 Random rand = new Random();
                 String randomCurrency = currencyRateDto.get(rand.nextInt(currencyRateDto.size())).getCurrency();
 
-                currencyList.add(0, new CurrencyRateDto(currencyList.get(0).getNominal(),
+                currencyList.add(0, new CurrencyRateDto(currencyList.get(0).getNominal(),//todo магическое число
                         dateInRus,
                         String.valueOf(randomCurrency),
                         currencyList.get(0).getCdx()));
             }
             else {
-                currencyList.add(0, new CurrencyRateDto(currencyList.get(0).getNominal(),
+                currencyList.add(0, new CurrencyRateDto(currencyList.get(0).getNominal(),//todo магическое число
                         dateInRus,
                         currencyList.get(0).getCurrency(),
                         currencyList.get(0).getCdx()));
@@ -114,17 +114,17 @@ public class ForecastCurrencyService {
 
 
     public static void getForecastResult(List<CurrencyRateDto> currencyList,
-                                         CurrencyType currencyType,
-                                         OperationDate operationDate,
+                                         CurrencyType currencyType,//todo не используется
+                                         OperationDate operationDate,//todo не используется
                                          TimeRange timeRange,
                                          Algorithms algorithms) throws ParseException {
-        if (algorithms.getAlgorithmType() == 0) {
+        if (algorithms.getAlgorithmType() == 0) {//todo магическое число
             ForecastCurrencyService.getForecastOldResult(currencyList, timeRange.getDays());
-        } else if (algorithms.getAlgorithmType() == 1) {
+        } else if (algorithms.getAlgorithmType() == 1) {//todo магическое число
             ForecastCurrencyService.getForecastLastYearResult(currencyList, timeRange.getDays());
-        } else if (algorithms.getAlgorithmType() == 2) {
+        } else if (algorithms.getAlgorithmType() == 2) {//todo магическое число
             ForecastCurrencyService.getForecastMistResult(currencyList, timeRange.getDays());
-        } else if (algorithms.getAlgorithmType() == 3) {
+        } else if (algorithms.getAlgorithmType() == 3) {//todo магическое число
             ForecastCurrencyService.getForecastLinRegResult(currencyList, timeRange.getDays());
         }
 
@@ -153,9 +153,9 @@ public class ForecastCurrencyService {
                     .collect(Collectors.toList());
 
             LinearRegression linearRegression = new LinearRegression(days, rateList);
-            currencyList.add(0, new CurrencyRateDto(currencyList.get(0).getNominal(),
+            currencyList.add(0, new CurrencyRateDto(currencyList.get(0).getNominal(),//todo магическое число
                     dateInRus,
-                    String.valueOf(linearRegression.predict(days.get(0))),
+                    String.valueOf(linearRegression.predict(days.get(0))),//todo магическое число
                     currencyList.get(0).getCdx()));
         }
     }

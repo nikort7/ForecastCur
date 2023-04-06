@@ -26,7 +26,7 @@ public class FileParseService {
 
         // the stream holding the file content
         if (inputStream == null) {
-            throw new IllegalArgumentException("file not found! " + fileName);
+            throw new IllegalArgumentException("file not found! " + fileName);// todo вынести в константу
         } else {
             return inputStream;
         }
@@ -38,7 +38,7 @@ public class FileParseService {
      *
      * @param is Входящий поток, в котором лежат данные из прочтенного файла
      */
-    private static void printInputStream(InputStream is) {
+    private static void printInputStream(InputStream is) {//todo не используется
 
         try (InputStreamReader streamReader =
                      new InputStreamReader(is, StandardCharsets.UTF_8);
@@ -66,14 +66,14 @@ public class FileParseService {
         CurrencyRateDto currencyRateDto = new CurrencyRateDto();
 
         InputStream is = getFileFromResourceAsStream(pathToCsv);
-        //printInputStream(is);
+        //printInputStream(is);//todo комменты в коде
 
         try (InputStreamReader streamReader = new InputStreamReader(is, StandardCharsets.UTF_8);
              BufferedReader reader = new BufferedReader(streamReader)) {
 
             String line = reader.readLine();
             while ((line = reader.readLine()) != null) {
-                String[] data = line.replaceAll("\"","").split(";");
+                String[] data = line.replaceAll("\"","").split(";");// todo вынести в константы
 
                 currencyList.add(new CurrencyRateDto(data));
             }
@@ -85,7 +85,7 @@ public class FileParseService {
         return currencyList;
     }
 
-    public List<CurrencyRateDto> readFileCsv(String pathToCsv) throws IOException {
+    public List<CurrencyRateDto> readFileCsv(String pathToCsv) throws IOException {//todo парсеру лучше не давать читать файл, лучше сделать FileReader и все, что он прочитал отдавать FileParserService
         return readFile(pathToCsv);
     }
 }
