@@ -7,16 +7,16 @@ import java.util.List;
 
 @Getter
 public enum CurrencyType {
-    USD("usd.csv"),
-    EUR("eur.csv"),
-    TRY("try.csv"),
-    AMD("amd.csv"),
-    BGN("bgn.csv");
+    USD("cbr/usd.csv"),
+    EUR("cbr/eur.csv"),
+    TRY("cbr/try.csv"),
+    AMD("cbr/amd.csv"),
+    BGN("cbr/bgn.csv");
 
     private String link;
     CurrencyType(String link) {
-        this.link = "cbr/" + link;
-    }// todo смысл? добавь этот префикс сразу в значение
+        this.link = link;
+    }
 
     public static CurrencyType checkCurrency(String inputData) {
 

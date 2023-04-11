@@ -8,14 +8,14 @@ import lombok.Getter;
 public enum TimeRange {
     TOMORROW(1),
     WEEK(7),
-    ANYDATE(0),//todo snake_case
+    ANY_DATE(0),
     MONTH(30);
 
     private int days;
 
-    public static TimeRange getAnyDate(int daysValue) {//todo метод с неочевидным поведением
-        ANYDATE.days = daysValue;//todo неочевидное поведение
-        return  ANYDATE;
+    public static TimeRange instalAnyDate(int daysValue) {
+        ANY_DATE.days = daysValue;
+        return ANY_DATE;
     }
 
 }

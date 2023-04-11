@@ -16,7 +16,7 @@ public class FileReader {
      */
     public static List<CurrencyRateDto> initInfo(CurrencyType currencyType) {
         FileParseService fileParseService = new FileParseService();
-        List<CurrencyRateDto> currencyList = new ArrayList<>();
+        List<CurrencyRateDto> currencyList;
 
         try {
             currencyList = fileParseService.readFileCsv(currencyType.getLink());

@@ -7,10 +7,10 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Algorithms {
     OLD(0),
-    LASTYEAR(1), //todo константы и enum-ы должны быть в snake_case
+    LAST_YEAR(1),
     MIST(2),
-    LINREG(3);
+    LIN_REG(3);
 
 
-    private int algorithmType;// todo сделай final
+    private final int algorithmType;
 }

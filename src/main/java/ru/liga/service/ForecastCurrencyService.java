@@ -2,15 +2,19 @@ package ru.liga.service;
 
 import ru.liga.dto.CurrencyRateDto;
 import ru.liga.enums.*;
+import ru.liga.utils.DateUtils;
 
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 
 public class ForecastCurrencyService {//todo делать все методы статическими не хорошо
-    private static final int CONST_ALG_VALUE = 7;//todo название переменной ни о чем не говорит
+    private static final int CONST_OLD_ALG_VALUE = 7;
+    private static final int ZERO = 0;
+    private static final int ONE = 1;
+    private static final int TWO = 2;
+    private static final int THREE = 3;
 
     /**
      * Дозаплнение списка
@@ -18,10 +22,10 @@ public class ForecastCurrencyService {//todo делать все методы с
      * @return
      */
     public static List<CurrencyRateDto> completingList(List<CurrencyRateDto> currencyRateDtoList) {
-        String date = currencyRateDtoList.get(0).getDate();//todo магическое число
+        String date = currencyRateDtoList.get(ZERO).getDate();
 
         int differenceDays = DateUtils.getDifferenceDays(date);
-        if (differenceDays < 0) {//todo магическое число
+        if (differenceDays < ZERO) {
             for (int i = 0; i < Math.abs(differenceDays); i++) {
                 currencyRateDtoList.remove(i);
             }
@@ -33,6 +37,14 @@ public class ForecastCurrencyService {//todo делать все методы с
         return currencyRateDtoList;
     }
 
+    private static double getAvgRate(List<CurrencyRateDto> currencyList) {
+        double sumRate = currencyList.stream()
+                .limit(CONST_OLD_ALG_VALUE)
+                .mapToDouble(w -> Double.parseDouble(w.getCurrency()))
+                .sum();
+        return sumRate / CONST_OLD_ALG_VALUE;
+    }
+
     /**
      * Получение прогноза курса валют
      *
@@ -41,19 +53,14 @@ public class ForecastCurrencyService {//todo делать все методы с
      */
     public static void getForecastOldResult(List<CurrencyRateDto> currencyList, Integer nextDayParam) {
         for (int outLoop = 0; outLoop < nextDayParam; outLoop++) {
-            double avgRate = currencyList.stream()
-                    .limit(CONST_ALG_VALUE)
-                    .mapToDouble(w -> Double.parseDouble(w.getCurrency()))
-                    .sum()
-                    / CONST_ALG_VALUE;//todo суммирование лучше вынести в отдельный метод, и разделить отдельно. Перенос строки тут лишний
-
+            double avgRate = getAvgRate(currencyList);
             try {
                 String dateInRus = DateUtils.getDateInRus(currencyList.get(0).getDate());
 
-                currencyList.add(0, new CurrencyRateDto(currencyList.get(0).getNominal(),//todo магическое число
+                currencyList.add(0, new CurrencyRateDto(currencyList.get(ZERO).getNominal(),
                         dateInRus,
                         String.valueOf(avgRate),
-                        currencyList.get(0).getCdx()));//todo магическое число
+                        currencyList.get(ZERO).getCdx()));
 
             } catch (ParseException e) {
                 throw new RuntimeException(e);
@@ -69,19 +76,19 @@ public class ForecastCurrencyService {//todo делать все методы с
             Optional<CurrencyRateDto> currencyRateDto = currencyList.stream()
                     .filter(currency -> currency.getDate().equals(prevYearDate))
                     .findAny();
-            if (!currencyRateDto.isEmpty()) {//todo isPresent. Но лучше использовать Optional красивее через методы map и orElse/orElseGet
+            if (currencyRateDto.isPresent()) {//todo isPresent. Но лучше использовать Optional красивее через методы map и orElse/orElseGet
                 String prevYearRate = currencyRateDto.get().getCurrency();
 
-                currencyList.add(0, new CurrencyRateDto(currencyList.get(0).getNominal(),//todo магическое число
+                currencyList.add(0, new CurrencyRateDto(currencyList.get(ZERO).getNominal(),
                         dateInRus,
                         String.valueOf(prevYearRate),
                         currencyList.get(0).getCdx()));
             }
             else {
-                currencyList.add(0, new CurrencyRateDto(currencyList.get(0).getNominal(),//todo магическое число
+                currencyList.add(0, new CurrencyRateDto(currencyList.get(ZERO).getNominal(),
                         dateInRus,
-                        currencyList.get(0).getCurrency(),//todo магическое число
-                        currencyList.get(0).getCdx()));//todo магическое число
+                        currencyList.get(ZERO).getCurrency(),
+                        currencyList.get(ZERO).getCdx()));
             }
         }
     }
@@ -98,33 +105,31 @@ public class ForecastCurrencyService {//todo делать все методы с
                 Random rand = new Random();
                 String randomCurrency = currencyRateDto.get(rand.nextInt(currencyRateDto.size())).getCurrency();
 
-                currencyList.add(0, new CurrencyRateDto(currencyList.get(0).getNominal(),//todo магическое число
+                currencyList.add(0, new CurrencyRateDto(currencyList.get(ZERO).getNominal(),
                         dateInRus,
                         String.valueOf(randomCurrency),
-                        currencyList.get(0).getCdx()));
+                        currencyList.get(ZERO).getCdx()));
             }
             else {
-                currencyList.add(0, new CurrencyRateDto(currencyList.get(0).getNominal(),//todo магическое число
+                currencyList.add(0, new CurrencyRateDto(currencyList.get(ZERO).getNominal(),
                         dateInRus,
-                        currencyList.get(0).getCurrency(),
-                        currencyList.get(0).getCdx()));
+                        currencyList.get(ZERO).getCurrency(),
+                        currencyList.get(ZERO).getCdx()));
             }
         }
     }
 
 
     public static void getForecastResult(List<CurrencyRateDto> currencyList,
-                                         CurrencyType currencyType,//todo не используется
-                                         OperationDate operationDate,//todo не используется
                                          TimeRange timeRange,
                                          Algorithms algorithms) throws ParseException {
-        if (algorithms.getAlgorithmType() == 0) {//todo магическое число
+        if (algorithms.getAlgorithmType() == ZERO) {
             ForecastCurrencyService.getForecastOldResult(currencyList, timeRange.getDays());
-        } else if (algorithms.getAlgorithmType() == 1) {//todo магическое число
+        } else if (algorithms.getAlgorithmType() == ONE) {
             ForecastCurrencyService.getForecastLastYearResult(currencyList, timeRange.getDays());
-        } else if (algorithms.getAlgorithmType() == 2) {//todo магическое число
+        } else if (algorithms.getAlgorithmType() == TWO) {
             ForecastCurrencyService.getForecastMistResult(currencyList, timeRange.getDays());
-        } else if (algorithms.getAlgorithmType() == 3) {//todo магическое число
+        } else if (algorithms.getAlgorithmType() == THREE) {
             ForecastCurrencyService.getForecastLinRegResult(currencyList, timeRange.getDays());
         }
 

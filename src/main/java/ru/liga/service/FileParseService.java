@@ -66,10 +66,9 @@ public class FileParseService {
         CurrencyRateDto currencyRateDto = new CurrencyRateDto();
 
         InputStream is = getFileFromResourceAsStream(pathToCsv);
-        //printInputStream(is);//todo комменты в коде
 
         try (InputStreamReader streamReader = new InputStreamReader(is, StandardCharsets.UTF_8);
-             BufferedReader reader = new BufferedReader(streamReader)) {
+            BufferedReader reader = new BufferedReader(streamReader)) {
 
             String line = reader.readLine();
             while ((line = reader.readLine()) != null) {

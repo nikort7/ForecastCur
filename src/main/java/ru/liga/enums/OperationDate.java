@@ -5,13 +5,12 @@ import lombok.Getter;
 
 @Getter
 public enum OperationDate {
-    DATE("date"),
-    PERIOD("period");
+    DATE("-date"),
+    PERIOD("-period");
 
-    private String operationDate;// todo сделай final
+    private final String operationDate;
 
     OperationDate(String operationDate) {
-        this.operationDate = "-" + operationDate;
-    }// todo префикс в значение
-
+        this.operationDate = operationDate;
+    }
 }
