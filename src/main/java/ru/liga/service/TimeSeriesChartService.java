@@ -36,7 +36,7 @@ public class TimeSeriesChartService extends ApplicationFrame {
     private static final int ONE = 1;
     private static final int TWO = 2;
 
-    private static ByteArrayOutputStream byteArrayOutputStream;
+    private static ByteArrayOutputStream byteArrayOutputStream;//todo почему статика? Каждый раз когда будет создан новый объект будет это поле будет затираться
 
     public static ByteArrayOutputStream getByteArrayOutputStream() {
         return byteArrayOutputStream;
@@ -81,7 +81,7 @@ public class TimeSeriesChartService extends ApplicationFrame {
 
         XYItemRenderer r = plot.getRenderer();
         if (r instanceof XYLineAndShapeRenderer) {
-            XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) r;
+            XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) r;//todo не имеет смысла
             renderer.setBaseShapesVisible   (true);
             renderer.setBaseShapesFilled    (true);
             renderer.setDrawSeriesLineAsPath(true);
@@ -110,7 +110,7 @@ public class TimeSeriesChartService extends ApplicationFrame {
 
     public JPanel createDemoPanel(List<CurrencyRateDto> printedList) {
         JFreeChart chart = createChart(createDataset(printedList));
-        chart.setPadding(new RectangleInsets(4, 8, 2, 2));
+        chart.setPadding(new RectangleInsets(4, 8, 2, 2));//todo магические значения
 
         try {
             //ChartUtilities.saveChartAsJPEG(new File(FILE_OF_CHART), chart, WIDTH, HEIGHT);
@@ -125,10 +125,10 @@ public class TimeSeriesChartService extends ApplicationFrame {
     }
 
     public static void drawChart(List<CurrencyRateDto> printedList) {
-        TimeSeriesChartService demo = new TimeSeriesChartService("TimeSeriesChartService", printedList);
+        TimeSeriesChartService demo = new TimeSeriesChartService("TimeSeriesChartService", printedList);//todo вынести в константу
         demo.pack();
         RefineryUtilities.centerFrameOnScreen(demo);
-        //demo.setVisible(true);
+        //demo.setVisible(true);//todo комменты в коде
 
     }
 }

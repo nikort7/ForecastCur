@@ -6,7 +6,7 @@ import lombok.Getter;
 public enum CommandStart {
     RATE(1);
 
-    CommandStart(Integer commandStartId) {
+    CommandStart(Integer commandStartId) {//todo не используется
     }
 
 }

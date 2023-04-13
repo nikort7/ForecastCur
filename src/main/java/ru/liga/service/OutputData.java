@@ -40,12 +40,12 @@ public class OutputData {
             String dateInRusWithName = DateUtils.getDateInRusWithName(printedList.get(i).getDate());
             Double avgRate = Double.valueOf(printedList.get(i).getCurrency());
             messageArgs = new String[]{dateInRusWithName, String.format("%.2f", avgRate), (i == 0 ? "" : "\n")};
-            result = new StringBuilder(result).append(messageFormat.format(messageArgs)).toString();
+            result = new StringBuilder(result).append(messageFormat.format(messageArgs)).toString();//todo StringBuilder предназначен чтобы избежать лишних вызовов new у класса String. Почитай StringBuilder best practices
         }
         return result;
     }
 
-    public static void printResultToChart(List<CurrencyRateDto> currencyList, Integer nextDayParam) throws ParseException{
+    public static void printResultToChart(List<CurrencyRateDto> currencyList, Integer nextDayParam) throws ParseException{//todo не используется
         List<CurrencyRateDto> printedList = currencyList.stream()
                 .limit(nextDayParam)
                 .collect(Collectors.toList());

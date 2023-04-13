@@ -1,4 +1,4 @@
-package ru.liga.entity;
+package ru.liga.entity;//todo почему entity?
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,8 @@ import java.util.List;
 
 @Getter
 @Setter
-public class Command {
-    private CommandStart commandStart; // rate
+public class Command {//todo этот класс очень загружен и не отражает своей реальной сути, лучше не делать структуру с набором сервисов + они не инициализируются и можно словить nullPointerException
+    private CommandStart commandStart; // rate//todo комменты в коде - это не очень хорошо
     private List<CurrencyType> currencyTypeList;
     private OperationDate operationDate; // -date, -period
     private TimeRange timeRange;
@@ -19,7 +19,7 @@ public class Command {
     private CommandOutput commandOutput;
     private OutputType outputType;
 
-    public Command() {
+    public Command() {//todo лучше использовать @NoArgsConstructor
 
     }
 }

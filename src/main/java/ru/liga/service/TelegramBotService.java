@@ -67,12 +67,12 @@ public class TelegramBotService extends TelegramLongPollingBot {
                             }
                             else {
                                 outputData = OutputData.printResultToTelegram(currencyRateDtoList, command.getTimeRange().getDays());
-                                sendTextMessage(originalMessage, (outputData != null ? outputData : null));
+                                sendTextMessage(originalMessage, (outputData != null ? outputData : null));//todo много if/else + тернарные выражения. Напрашивается применение какого-нибудь решение для устранения if-ов. Погугли как избавиться от if/else и switch/case
                             }
                         }
                         else {
                             outputData = OutputData.printResultToTelegram(currencyRateDtoList, command.getTimeRange().getDays());
-                            sendTextMessage(originalMessage, (outputData != null ? outputData : null));
+                            sendTextMessage(originalMessage, (outputData != null ? outputData : null));//todo тернарное выражение не имеет смысла
                         }
                     } catch (ParseException e) {
                         throw new RuntimeException(e);

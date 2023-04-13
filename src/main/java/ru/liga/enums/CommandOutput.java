@@ -8,6 +8,6 @@ import lombok.Getter;
 public enum CommandOutput {
     OUTPUT("-output");
 
-    CommandOutput(String outputStartId) {
+    CommandOutput(String outputStartId) {//todo не используется
     }
 }

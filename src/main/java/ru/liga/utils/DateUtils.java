@@ -52,7 +52,7 @@ public class DateUtils {
         return result.substring(0, 1).toUpperCase() + result.substring(ONE);
     }
 
-    public static Integer getDifferenceDays(String date) {
+    public static Integer getDifferenceDays(String date) {//todo название метода не отражает сути. По имени ожидается, что метод ожидает 2 аргумента, а получается, что внутри есть какая-та логика поиска точки отсчета. Назови метод, чтобы было понятно, что вычисляется разница даты, которая передается в аргументах и текущей даты
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
         LocalDate startDate = LocalDate.parse(date, formatter);
         LocalDate currentDate = LocalDate.now();
@@ -63,7 +63,7 @@ public class DateUtils {
         }
         else {
             resultDays = ChronoUnit.DAYS.between(currentDate, startDate);
-        }
+        }//todo if/else вынести в отдельный метод
 
         return Math.toIntExact(resultDays);
     }

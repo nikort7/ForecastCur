@@ -13,9 +13,9 @@ public enum TimeRange {
 
     private int days;
 
-    public static TimeRange instalAnyDate(int daysValue) {
+    public static TimeRange instalAnyDate(int daysValue) {//todo в названии ошибка
         ANY_DATE.days = daysValue;
         return ANY_DATE;
-    }
+    }//todo этот метод выглядит как костыль, enum == public static переменная, поэтому не стоит ее изменять. Не thread-safety
 
 }

@@ -9,7 +9,7 @@ public enum Algorithms {
     OLD(0),
     LAST_YEAR(1),
     MIST(2),
-    LIN_REG(3);
+    LIN_REG(3);//todo не скупись на полные названия переменных, так как в enum важно отразить суть переменной. LINEAR_REGRESSION
 
 
     private final int algorithmType;

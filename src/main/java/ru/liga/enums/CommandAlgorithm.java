@@ -8,6 +8,6 @@ import lombok.Getter;
 public enum CommandAlgorithm {
     ALG("-alg");
 
-    CommandAlgorithm(String algorithmStartId) {
+    CommandAlgorithm(String algorithmStartId) {//todo не используется
     }
 }

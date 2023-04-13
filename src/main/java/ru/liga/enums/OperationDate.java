@@ -12,5 +12,5 @@ public enum OperationDate {
 
     OperationDate(String operationDate) {
         this.operationDate = operationDate;
-    }
+    }//todo лучше использовать @RequiredArgsConstructor
 }

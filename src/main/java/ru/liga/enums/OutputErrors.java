@@ -11,5 +11,5 @@ public enum OutputErrors {
     MISSING_VALUES("В команде не хватает значений");
 
 
-    private String errorMessege;
+    private String errorMessege;//todo сделай final + ошибка в имени переменной
 }

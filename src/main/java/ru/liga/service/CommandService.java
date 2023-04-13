@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CommandService {
-    private static Command command;
+    private static Command command;//todo почему статика? Зачем выносить в поле класса, если происходит инициализация в методе? Инициализируй здесь сразу, а если нужен всегда новый экземпляр, то отсюда это убери и просто создавай в методе
 
     public static Command getCommand(String inputDataFromConsole) {
         command = new Command();

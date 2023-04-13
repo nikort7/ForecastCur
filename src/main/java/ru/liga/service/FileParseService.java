@@ -62,7 +62,7 @@ public class FileParseService {
      * @throws IOException Если есть проблема при чтении файлов
      */
     private List<CurrencyRateDto> readFile(String pathToCsv) throws IOException {
-        List<CurrencyRateDto> currencyList = new ArrayList<CurrencyRateDto>();
+        List<CurrencyRateDto> currencyList = new ArrayList<CurrencyRateDto>();//todo аргумент типа лишний
         CurrencyRateDto currencyRateDto = new CurrencyRateDto();
 
         InputStream is = getFileFromResourceAsStream(pathToCsv);
